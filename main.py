@@ -42,12 +42,12 @@ def add_donation():
 
     if request.method == 'POST':
         try:
-            amount = int(request.form['donation'])
             donor = Donor.select().where(Donor.name==request.form['donor']).get()
+            amount = int(request.form['donation'])
             Donation(donor=donor, value=amount).save()
             return redirect(url_for('home'))
 
-        except IndexError:
+        except DoesNotExist:
             return render_template('add_donation.jinja2', error="Invalid Donor. Please try again!")
 
         except ValueError:
